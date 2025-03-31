@@ -1,0 +1,12 @@
+.prod-list-spinner{
+    display: block;
+    margin: auto;
+}
+
+.prod-img{
+    width: 20%;
+}
+
+.prod-sort{
+    cursor: pointer;
+}
