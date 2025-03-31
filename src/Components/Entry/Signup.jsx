@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
 
   //State for form values and errors as well
-  const [userInfo, setUserInfo] = useState({ email: "", username: "", password: "", confPassword: "" });
+  const [userInfo, setUserInfo] = useState({id:null, email: "", username: "", password: "", confPassword: "" });
   const [errors, setErrors] = useState({ email: "", username: "", password: "", confPassword: "" });
 
   //Redirect to Add Note Route after signing up
   const navigate = useNavigate();
   const redirectAfterSignup = () => {
-    navigate('/');
+    navigate('/product');
   };
     
   //Handle form input value change
@@ -82,17 +82,33 @@ const Signup = () => {
     //Storing old credentials too, if existed
     if(localStorage.getItem("acc-detail")){
       var otherCredentials = JSON.parse(localStorage.getItem("acc-detail"));
+      accDetail['id'] = otherCredentials.length + 1;
       otherCredentials.push(accDetail);
       localStorage.setItem("acc-detail", JSON.stringify(otherCredentials));
+
+      //Set logged in ID
+      var loggedinDetail = {
+        "id": otherCredentials.length,
+        "loggedIn": true
+      }
+      localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
     }
     else{
+      accDetail['id'] = 1;
       var arr = [];
       arr.push(accDetail);
       localStorage.setItem("acc-detail", JSON.stringify(arr));
+
+      //Set logged in ID
+      var loggedinDetail = {
+        "id": 1,
+        "loggedIn": true
+      }
+      localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
     }
 
     //Redirect to Home page after signup
-    // redirectAfterSignup();
+    redirectAfterSignup();
   }
   
   return (

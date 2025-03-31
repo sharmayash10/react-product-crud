@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import Signup from "./Components/Entry/Signup";
 import List from "./Components/Product/List";
+import Login from "./Components/Entry/Login";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Carousel />}></Route>
             <Route path="/signup" element={<Signup/>}></Route>
+            <Route path="/login" element={<Login/>}></Route>
             <Route path="/product" element={<List/>}></Route>
           </Routes>
         </Container>
