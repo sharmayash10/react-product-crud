@@ -37,10 +37,10 @@ const Carousel = (props) => {
 
   return (
     <>
-      <CarouselReact>
+      <CarouselReact fade className="caro-card-parent">
         {groupImages.map((groupedImg, idx) => {
           return (
-            <CarouselReact.Item key={idx} className="caro-card-parent">
+            <CarouselReact.Item key={idx}>
               <Row>
                 {groupedImg.map((item, index) => {
                     return (

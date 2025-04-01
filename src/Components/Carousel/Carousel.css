@@ -2,3 +2,13 @@
 .carousel-control-prev , .carousel-indicators {
     filter: invert(100%);
 }
+
+.caro-card-parent .carousel-inner{
+    width: 75%;
+    overflow: visible;
+    margin: auto;
+}
+
+.caro-card-parent .carousel-indicators{
+    margin-bottom: -3rem !important
+}
