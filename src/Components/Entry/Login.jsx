@@ -3,11 +3,11 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
     
     //State for form values and errors as well
     const [loginInfo, setLoginInfo] = useState({username: "", password: ""});
-    const [errors, setErrors] = useState({username: "", password: "" });
+    const [errors, setErrors] = useState({username: "", password: "", msg: "" });
 
     //Redirect to Product Note Route after loggin
     const navigate = useNavigate();
@@ -40,19 +40,25 @@ const Login = () => {
 
         //Check user data
         var credentials = JSON.parse(localStorage.getItem("acc-detail"));
-        let loginCheck = credentials.filter((val)=>{
-            return val.username === loginInfo.username && val.password === loginInfo.password
-        })
+        if(credentials?.length > 0){
+            let loginCheck = credentials.filter((val)=>{
+                return val.username === loginInfo.username && val.password === loginInfo.password
+            })
 
-        if(loginCheck.length > 0){
-            //Set logged in ID
-            var loggedinDetail = {
-                "id": loginCheck[0].id,
-                "loggedIn": true
+            if(loginCheck.length > 0){
+                //Set logged in ID
+                var loggedinDetail = {
+                    "id": loginCheck[0].id,
+                    "loggedIn": true
+                }
+                localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
+                props.updateLogin(true);
+                redirectAfterLogin();
+            }else{
+                setErrors((value)=>({...value, msg: "Invalid Credentials"}))
             }
-            localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
-
-            redirectAfterLogin();
+        }else{
+            setErrors((value)=>({...value, msg: "Invalid Credentials"}))
         }
     }
 
@@ -64,7 +70,7 @@ const Login = () => {
         if (e.target.name === "username" && e.target.value.length > 0) {
             setErrors((prevErrors) => ({ ...prevErrors, username: "" }));
         }
-        if (e.target.name === "password" && e.target.value.length >=5) {
+        if (e.target.name === "password" && e.target.value.length >0) {
             setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
         }
     }
@@ -87,6 +93,7 @@ const Login = () => {
         <Button variant="primary" type="submit">
         Login
         </Button>
+        {errors.msg && <div className="text-danger">{errors.msg}</div>}
     </Form>
   )
 }

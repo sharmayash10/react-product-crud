@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = (props) => {
 
   //State for form values and errors as well
   const [userInfo, setUserInfo] = useState({id:null, email: "", username: "", password: "", confPassword: "" });
@@ -14,7 +14,18 @@ const Signup = () => {
   const redirectAfterSignup = () => {
     navigate('/product');
   };
-    
+  
+  var registeredEmails = [];
+  var registeredUsernames = [];
+  //Get all emails and username from localStorage to avoid creating user with same values
+  if(localStorage.getItem("acc-detail")){
+    let allUser = JSON.parse(localStorage.getItem("acc-detail"));
+    allUser.map((val)=>{
+      registeredEmails.push(val.email);
+      registeredUsernames.push(val.username);
+    })
+  }
+
   //Handle form input value change
   const handleChange = (e) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
@@ -49,11 +60,15 @@ const Signup = () => {
     const trimmedEmail = userInfo.email.trim();
     if (trimmedEmail.length === 0) {
       formErrors.email = "Email cannot be blank";
+    }else if(registeredEmails.includes(trimmedEmail)){
+      formErrors.email = "Email already registered. Please try with different email";
     }
 
     const trimmedUsername = userInfo.username.trim();
     if (trimmedUsername.length === 0) {
       formErrors.username = "Username cannot be blank";
+    }else if(registeredUsernames.includes(trimmedUsername)){
+      formErrors.username = "Username not available";
     }
 
     const trimmedPassword = userInfo.password.trim();
@@ -86,12 +101,11 @@ const Signup = () => {
       otherCredentials.push(accDetail);
       localStorage.setItem("acc-detail", JSON.stringify(otherCredentials));
 
-      //Set logged in ID
+      //Set logged in ID for localStorage
       var loggedinDetail = {
         "id": otherCredentials.length,
         "loggedIn": true
       }
-      localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
     }
     else{
       accDetail['id'] = 1;
@@ -99,14 +113,15 @@ const Signup = () => {
       arr.push(accDetail);
       localStorage.setItem("acc-detail", JSON.stringify(arr));
 
-      //Set logged in ID
+      //Set logged in ID for localStorage
       var loggedinDetail = {
         "id": 1,
         "loggedIn": true
       }
-      localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
     }
-
+    
+    localStorage.setItem("loggedIn", JSON.stringify(loggedinDetail));
+    props.updateLogin(true);
     //Redirect to Home page after signup
     redirectAfterSignup();
   }

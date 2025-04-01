@@ -10,3 +10,8 @@
 .prod-sort{
     cursor: pointer;
 }
+
+.prod-filter{
+    margin-left: 20px;
+    cursor: pointer;
+}

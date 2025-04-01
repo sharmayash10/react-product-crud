@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CarouselReact from "react-bootstrap/Carousel";
 import CardReact from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Carousel.css";
 
-const Carousel = () => {
+const Carousel = (props) => {
   //Array to store name of all Images
   const imgList = [
     "Coffee 1.jpg",
